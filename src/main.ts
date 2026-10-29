@@ -2,6 +2,7 @@ import './style.css';
 import { InvestigationSession } from './session';
 import { isIntensity } from './intensity';
 import { renderRecord, shell } from './ui';
+import { buildExportDocument, createRecordPng, downloadRecord } from './export-record';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = shell();
 const form = document.querySelector<HTMLFormElement>('#investigation-form')!;
@@ -12,10 +13,41 @@ const error = document.querySelector<HTMLDivElement>('#error')!;
 const result = document.querySelector<HTMLElement>('#record')!;
 let busy = false;
 const session = new InvestigationSession();
+let exporting = false;
+
+result.addEventListener('click', async event => {
+  if (!(event.target instanceof Element)) return;
+  const exportButton = event.target.closest<HTMLButtonElement>('#export-record');
+  if (!exportButton || exporting) return;
+  const current = session.current();
+  if (!current) return;
+  // Capture the exact mode and edition at click time, before avatar loading.
+  const document = buildExportDocument(current.data, current.record);
+  exporting = true;
+  exportButton.disabled = true;
+  exportButton.textContent = 'PREPARING RECORD…';
+  status.hidden = false;
+  status.textContent = '> Printing the judicial record. Nothing is uploaded.';
+  try {
+    const blob = await createRecordPng(document);
+    downloadRecord(blob, current.data.profile.login);
+    status.textContent = '> PNG ready. Download requested; your browser may show a save or preview prompt.';
+  } catch (cause) {
+    status.textContent = `> Export failed. ${cause instanceof Error ? cause.message : 'Please retry in a current browser.'}`;
+  } finally {
+    exporting = false;
+    const active = result.querySelector<HTMLButtonElement>('#export-record');
+    if (active) { active.disabled = false; active.textContent = 'EXPORT CRIMINAL RECORD'; }
+  }
+});
 
 function renderCurrent() {
   const current = session.current();
   if (current) result.innerHTML = renderRecord(current.data, current.evidence, current.record);
+  if (exporting) {
+    const exportButton = result.querySelector<HTMLButtonElement>('#export-record');
+    if (exportButton) { exportButton.disabled = true; exportButton.textContent = 'PREPARING RECORD…'; }
+  }
 }
 
 document.addEventListener('change', event => {

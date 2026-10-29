@@ -12,6 +12,10 @@
 @media(max-width:550px){.verdict{padding:22px 18px}.sentence-section{margin-top:26px;padding-top:24px}}
 
 /* Sentence controls retain the terminal's compact, keyboard-friendly identity. */
+.export-actions{display:flex;align-items:center;flex-wrap:wrap;gap:16px;margin-top:30px;padding-top:24px;border-top:1px solid var(--border)}
+.export-actions button{min-height:46px;white-space:normal;line-height:1.6}
+.export-actions>span{color:var(--muted);font-size:9px;letter-spacing:.5px;line-height:1.8}
+@media(max-width:550px){.export-actions button{width:100%;padding:12px}}
 .intensity{border:0;padding:0;margin:27px 0 0;min-width:0}
 .intensity legend{font-size:10px;letter-spacing:1.3px;color:#b7c5b6;margin-bottom:11px}
 .mode-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}

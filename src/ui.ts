@@ -40,5 +40,6 @@ export function renderRecord(data: Investigation, evidence: Evidence, record: Cr
     <div class="verdict">
       <section class="verdict-section" aria-labelledby="verdict-heading"><h3 id="verdict-heading" class="eyebrow">THE VERDICT</h3><p class="verdict-text">${e(record.verdict)}</p></section>
       <section class="sentence-section" aria-labelledby="sentence-heading"><h3 id="sentence-heading" class="eyebrow">THE SENTENCE</h3><p class="sentence-text">${e(record.sentence)}</p></section>
+      <div class="export-actions"><button id="export-record" type="button">EXPORT CRIMINAL RECORD</button><span>1200 × 630 PNG / GENERATED LOCALLY</span></div>
     </div><p class="disclaimer">This is developer satire. All charges and sentences are fictional. Stale repositories can be finished projects. Forks are perfectly legal.</p>`;
 }
