@@ -1,143 +1,151 @@
 # GIT CRIMES
 
-**Your GitHub history is a crime scene. We have the receipts.**
+**Your Commits. Your Crimes. Your Sentence.**
 
-A fictional GitHub Criminal Investigation Division for JSConf Guadalajara, October 28–29, 2026. Enter a public GitHub username for a developer roast supported by real repository metadata. All charges and sentences are satire.
+Built during **Codex Build Day Guadalajara 2026** by **GCPD — GitHub Crime Police Department**, with OpenAI Codex.
 
-Developed using **OpenAI Codex during the OpenAI Codex Build Day**.
+**[LIVE DEMO](https://git-crimes.pages.dev/) · [WATCH DEMO](https://youtu.be/zYIzrisTKns) · [CODEX EVIDENCE](#codex-evidence)**
 
-## Installation and development
+[Source repository](https://github.com/romangij/git-crimes) · [Try it](#try-the-project) · [Development case study](#how-we-built-it-with-codex) · [Technical information](#technical-information)
 
-Requires Node.js 22.12+ (22.x), 24.x, or 26+ and npm. Node 24 LTS is a suitable default.
+Your public GitHub profile is now a crime scene. GIT CRIMES turns public repository metadata into fictional, evidence-backed developer satire: charges, a verdict, and a sentence with receipts. Investigate yourself, appeal with “IT WORKS ON MY MACHINE,” or put two accounts into a CRIMINAL SHOWDOWN. The court is fictional; the repository links are real.
 
-```sh
-npm install
-npm run dev
-```
+## Codex evidence
 
-Open the Vite URL (normally http://localhost:5173).
+**A working feature was only the first verdict. Human review changed the experience.**
 
-```sh
-npm run build    # TypeScript check and production build
-npm test         # Automated tests
-npm run preview # Preview production build
-```
+- **Initial Codex implementation:** ACCOMPLICE MODE worked; **57 automated tests passed**.
+- **Human review:** the interface felt visually flat and was difficult to understand as a showdown.
+- **Codex redesign:** large avatars, a VS composition, role stamps, and evidence-aware verdicts made the confrontation clear.
+- **Final validation:** **63 automated tests passed**, the production build passed, and the deployed feature was manually verified by the human reviewer.
+
+![Authentic Codex CLI session showing the Accomplice Mode implementation summary and initial 57 passing tests](docs/codex-evidence/codex-cli.png)
+
+*Codex CLI development evidence from the event. This capture documents the initial implementation; the before/after case study below shows the subsequent redesign.*
+
+[See the human direction, Codex changes, and before/after screenshots →](#how-we-built-it-with-codex)
+
+## Try the project
+
+Open **[git-crimes.pages.dev](https://git-crimes.pages.dev/)**. No login or token required.
+
+1. **SOLO INVESTIGATION:** enter a public GitHub username, choose a roast intensity, and initiate the investigation. Read the charges and linked receipts, try a PLEA BARGAIN, or export the criminal record as a PNG.
+2. **ACCOMPLICE MODE:** enter two distinct public GitHub usernames and select **INVESTIGATE BOTH**. The CRIMINAL SHOWDOWN presents the suspects, fictional roles, and joint verdict. Open **EXAMINE THE EVIDENCE** for the comparison details.
+
+Ties and insufficient comparable evidence leave roles unassigned. These roles do not imply real misconduct or that the accounts actually collaborated. You can switch back to solo without losing its current case.
 
 ## Features
 
-- **Accomplice Mode (v0.5):** switch between independent solo and joint investigations. Investigate two distinct public GitHub usernames, inspect both evidence files and comparison ratios, and receive fictional CRIMINAL MASTERMIND / WILLING ACCOMPLICE roles only when comparable scores differ. Ties and insufficient evidence leave both roles unassigned. Joint cases do not support PNG export, intensity controls, or Plea Bargain. Solo features remain available in the solo panel.
-
-- **Plea Bargain (v0.4):** after THE SENTENCE, choose I PLEAD NOT GUILTY, IT WORKS ON MY MACHINE, or BLAME THE INTERN. A terminal court transcript quotes the statement, responds with existing lead-charge evidence and a mode-specific judge quip, and concludes APPEAL DENIED.
-- One appeal is allowed per issued sentence. A successful new investigation (including the same username), a changed intensity, or any reissued roast resets it. Re-selecting the current intensity does not. A failed investigation does not issue a new sentence.
-- Appeals use six charge-specific template sets that weave retrieved counts and metadata into the punchline. Innocence, localhost alibis, and imaginary delegation have distinct comedic premises, without a repeated factual appendix. Replies stay within two sentences and do not infer abandonment, local activity, file contents, or a real intern.
-- Appeals are deterministic with three response variants per defense and mode. Case, intensity, and defense select the starting variant; the explicit roast edition advances it. REISSUE ROAST unlocks another appeal and changes the judge wording for the same defense, cycling after three editions. No additional API calls occur. Cleared cases receive a generic ceremonial-send-off response that explicitly preserves their clearance. Appeals never change charges, verdicts, sentences, or PNG exports.
-- **Export Your Criminal Record (v0.3):** use **EXPORT CRIMINAL RECORD** beneath the sentence to download a 1200 × 630 PNG. The ivory judicial document includes the public avatar (or dossier silhouette), username, case ID, current intensity, principal charge and factual evidence, current verdict and sentence, and `git-crimes.pages.dev`.
-- Export captures the mode and roast edition at click time. The principal charge uses the engine's stable order (abandonment, language, creation, descriptions, forks, empty size); cleared profiles get a CLEARED stamp and an insufficient-evidence finding instead of a conviction.
-- Canvas rendering and PNG encoding run entirely in the browser. Nothing is uploaded, published, or persisted by the app. The existing public avatar may be requested anonymously from GitHub; no additional profile/repository API calls are made.
-- **Choose Your Sentence (v0.2):** select FRIENDLY WARNING, FELONY (default), or UNHINGED before investigating, then switch directly above the record. Modes range from gentle lint-warning humor to theatrical rubber-duck tribunals.
-- Mode changes instantly reuse the current evidence snapshot without additional GitHub requests. The selectors stay synchronized, including when a mode is chosen during loading.
-- **REISSUE ROAST** cycles through three deterministic editions per mode: different charge jokes, verdicts, and sentences, with the same factual findings and case ID. Editions cycle after three; switching mode preserves the current edition. A fresh investigation starts at edition one, with its initial wording selected by account ID and sample size.
-- Zero-repository and below-threshold samples get mode-specific insufficient-evidence jokes and fictional releases. No charges or private activity are invented to fill the page.
-- Roast text is displayed separately from labeled factual evidence. Intensity changes presentation only; eligibility, severity, repository links, and statistics stay identical.
-- Responsive terminal interface with reduced motion support, keyboard access, and live progress without artificial delays.
-- Real GitHub public profile and up to 100 repositories, using two requests per investigation with no token.
-- Six deterministic possible charges with linked receipts, case ID, avatar, statistics, verdict, and sentence.
-- Cleared records when evidence supports no charges, including accounts with no public repositories.
-- Missing-user, rate-limit/access restriction, network, and timeout errors; retry through the form.
-- Escaped public text and restricted outbound repository/avatar URLs.
-
-## Evidence rules
-
-Rules use the retrieved sample; forks are excluded from original-repository rules.
-
-| Charge | Required evidence |
+| Feature | What you get |
 | --- | --- |
-| Repository Abandonment | One or more original, non-archived repos with last push over 365 days ago |
-| JavaScript Allegiance | Three or more originals with primary language JavaScript or TypeScript |
-| Serial Repository Creation | Ten or more originals |
-| Description Negligence | Three or more originals with missing or blank descriptions |
-| Excessive Fork Possession | Five or more forks |
-| Empty Promise | One or more originals with reported size 0 KB |
+| Solo investigations | Public GitHub metadata, six possible fictional charges, linked receipts, verdict, and sentence. Unsupported charges are never added to fill the page. |
+| Three roast intensities | FRIENDLY WARNING, FELONY, and UNHINGED change the prosecutor's tone, not the evidence. |
+| REISSUE ROAST | Three deterministic editions per intensity, reusing the same evidence with no additional API requests. |
+| PNG criminal records | A locally generated 1200 × 630 judicial souvenir with the current principal charge, evidence, verdict, and sentence. |
+| PLEA BARGAIN | One appeal per issued solo sentence. Choose a defense and receive an evidence-aware courtroom response; the original ruling stands. |
+| ACCOMPLICE MODE | Independent joint state, prominent dossiers and VS matchup, fictional CRIMINAL MASTERMIND / WILLING ACCOMPLICE stamps, and a verdict grounded in comparable findings. |
 
-## Architecture
+Joint investigations have no PNG export, intensity controls, or plea bargain in v0.5. The retro terminal interface includes keyboard access, reduced-motion support, and live progress and errors.
 
-- `src/github.ts`: API retrieval, progress, and errors.
-- `src/types.ts`: shared data contracts.
-- `src/evidence.ts`: pure analysis with explicit clock.
-- `src/eligibility.ts`: factual charge eligibility and evidence statements, independent of humor.
-- `src/intensity.ts`: typed modes, labels, descriptions, and default.
-- `src/humor.ts`: curated mode-specific charge titles, joke variants, verdicts, sentences, and cleared-record commentary.
-- `src/charges.ts`: deterministic presentation assembly and case generation.
-- `src/session.ts`: active evidence snapshot, mode selection, and three-edition cycle. Only opening an investigation performs network requests.
-- `src/appeal.ts`: defense options, pure evidence-aware judge responses, and appeal data types; one-shot/reset state is owned by the session.
-- `src/appeal-templates.ts`: charge-specific defense writing, cleared-case replies, and mode-aware courtroom wording; counts come from the existing charge's supporting repositories.
-- `src/export-record.ts`: export data mapping, measured text layout, CORS-safe avatar loading, judicial Canvas rendering, PNG encoding, and local download.
-- `src/ui.ts`: escaped HTML rendering.
-- `src/main.ts`: investigation lifecycle.
-- `src/style.css`: responsive styling.
-- `src/analysis.test.ts`: evidence boundaries, charge thresholds, cleared states, deterministic results, receipts, and escaping.
-- `src/github.test.ts`: request count, progress, missing users, rate limits, and network failures with mocked API responses.
-- `src/roast.test.ts`: all modes, factual invariance, deterministic editions, sparse profiles, safe rendering, and request-free mode switching/reissuing.
-- `src/appeal.test.ts`: defenses, evidence and cleared fallbacks, deterministic variants, one-shot/reset state, unchanged exports, request counts, and transcript rendering.
-- `src/export-record.test.ts`: current snapshot mapping, cleared exports, all mode/edition layouts, long-text wrapping, avatar origin/CORS/error/timeout behavior, PNG encoding, and download cleanup. Canvas and DOM are mocked; these tests do not replace browser rendering checks.
+## How we built it with Codex
 
-## Known limitations
+### Human direction and delegated implementation
 
-- Inspects only the 100 most recently updated public repositories owned by an account, including forks. Sample size and partial coverage are disclosed. No pagination or private data.
-- GitHub commonly allows 60 unauthenticated API requests/hour per IP. Shared conference Wi-Fi can exhaust that allowance. Each request has a 15-second timeout.
-- No files, dependency manifests, README content, or commit histories are fetched. Primary language does not prove dependency usage; absent description does not imply missing documentation. Zero KB is metadata, not proof of no files.
-- Profile and repository requests are separate snapshots; counts may change between them. Metadata may lag actual activity.
-- Cases identify an account and UTC date; nothing persists after reload. Rules are deterministic for identical data and clock, but live data changes.
-- Humor is a finite curated template set, not AI generation. Three editions per mode repeat by design. Only the active solo and active joint investigations are retained separately in memory; submitting a username again explicitly fetches fresh evidence.
-- Export includes one principal charge, not the full record or repository list. It discloses sample coverage and metadata-only scope. All judicial language is fictional.
-- Avatar loading is restricted to HTTPS `avatars.githubusercontent.com` with anonymous CORS and a four-second timeout. Missing/blocked avatars use a silhouette; a canvas security failure retries without the photo. System Courier fonts avoid external font dependencies in the PNG, but metrics may vary slightly by platform.
-- Export text is wrapped and measured down to a minimum of 14 px without silent truncation. If future templates exceed the available space, export shows an error rather than dropping evidence or the sentence.
-- Downloads depend on browser save behavior. Mobile browsers may present a preview or save prompt; use the browser's image/file save controls if prompted. Desktop Chrome/Firefox/Safari and physical iOS/Android download behavior still require manual verification, including successful-avatar and blocked-avatar exports and maximum-length usernames.
-- Internet access is required. Optional Google Fonts falls back to local monospace fonts.
-- Automated tests cover pure analysis and generation; browser interaction and live GitHub availability require manual verification.
+During Codex Build Day Guadalajara 2026, the human developer directed Codex to add ACCOMPLICE MODE to the existing app: investigate two public accounts, reuse the evidence rules and GitHub client, compare normalized findings, and preserve solo behavior. Constraints included no backend, authentication, database, new dependencies, or unnecessary API endpoints, plus explicit handling of ties, sparse metadata, and partial failures.
 
-## Planned enhancements
+Codex implemented the comparison module, isolated joint session and UI, failure handling, tests, and documentation. The initial result passed **57 tests** and a production build. It was functional, but the human browser review identified a product problem that passing tests did not catch.
 
-Optional AI roast engine behind the evidence contract, persistent archives, sharing, and broader paginated evidence retrieval. These are future work. No OpenAI/OpenRouter integration, database, authentication, leaderboard, or deployment infrastructure is included.
+### Before: correct data, weak confrontation
 
-## Accomplice comparison methodology (v0.5)
+![Initial Accomplice Mode showing two text-heavy evidence cards, numeric indices, and a generic joint verdict](docs/codex-evidence/accomplice-before.png)
 
-The joint engine reuses `investigate`, `analyzeEvidence`, and `eligibleCharges`. Each account costs the existing profile request plus one repository-page request (four requests total on success); no new endpoints, dependencies, authentication, or persistence. Both requests must succeed before any verdict appears. Failures identify the affected username, clear the previous joint case, and require retrying both accounts. Duplicate names are rejected case-insensitively before fetching; aliases resolving to one account are rejected after fetching.
+*Before: the result read like a data comparison. Roles were easy to miss, technical details dominated, and the verdict did little to explain the outcome.*
 
-For each dimension, the numerator is the number of supporting repositories **only if the existing charge threshold is met**, otherwise zero:
+The human reviewer requested a **CRIMINAL SHOWDOWN**: large avatars and usernames, a strong VS separator, an unmistakable mastermind stamp, the verdict immediately after the matchup, and technical evidence behind a collapsed panel. The scoring algorithm was to remain unchanged. The comedy needed to explain the result using actual findings rather than a generic one-liner.
 
-| Dimension | Denominator | Existing eligibility threshold |
+### After: a showdown with receipts
+
+![Redesigned Criminal Showdown with large GitHub avatars, a VS separator, contrasting role stamps, an evidence-backed verdict, and collapsed evidence](docs/codex-evidence/accomplice-after.png)
+
+*After: the fictional outcome is readable before opening the evidence panel. The verdict contrasts observed proportions and delivers a finding-specific developer punchline.*
+
+Codex implemented the revised joint rendering and responsive styling, safe public-avatar handling with initials as a fallback, and a separate verdict-copy module. The verdict selects the largest positive contribution to the existing fictional index among comparable dimensions; it does not introduce another scoring system. Ties and insufficient evidence get clear outcomes without assigning a mastermind.
+
+**The division of work:** the human set the constraints, tried the interface, identified the UX failure, and supplied corrective design and comedy direction. Codex implemented those changes and added focused tests. The human then manually verified the deployed feature. The screenshots document that iteration; they are not a claim that Codex independently judged the product ready.
+
+### Validation and review
+
+- **Initial implementation:** 57 passing automated tests and a passing production build.
+- **After redesign:** 63 passing automated tests and a passing production build, including TypeScript checking.
+- **Coverage:** normalized comparisons, deterministic roles, ties, insufficient evidence, different sample sizes, incomplete metadata, API failures, solo isolation, safe rendering, verdict facts, and the collapsed evidence layout, alongside existing solo, appeal, and export tests.
+- **Human verification:** manual review exposed the initial UX problem; the deployed redesign was subsequently verified. Automated tests do not replace browser layout, accessibility, image-loading, or real-network checks, and this is not a claim of exhaustive cross-browser testing.
+
+## Technical information
+
+### Stack and local development
+
+TypeScript, Vite, plain HTML/CSS, browser Canvas for PNG export, and Vitest for tests. GitHub's public REST API supplies metadata. Humor uses curated deterministic templates; there is no runtime OpenAI API or other AI service. **Codex was the development tool.**
+
+Requires npm and Node.js 22.12+ within 22.x, 24.x, or 26+.
+
+```sh
+npm install
+npm run dev      # Open the Vite URL, normally http://localhost:5173
+npm test         # Full automated suite
+npm run build    # TypeScript check and production bundle
+npm run preview  # Serve the production build locally
+```
+
+### Architecture
+
+| Responsibility | Files |
+| --- | --- |
+| Public API requests, progress, and errors | `src/github.ts`, `src/types.ts` |
+| Evidence and charge eligibility | `src/evidence.ts`, `src/eligibility.ts` |
+| Solo templates, intensity, records, and session | `src/humor.ts`, `src/intensity.ts`, `src/charges.ts`, `src/session.ts` |
+| Appeals and local PNG generation | `src/appeal.ts`, `src/appeal-templates.ts`, `src/export-record.ts` |
+| Joint comparison and isolated session | `src/accomplice.ts` |
+| Joint presentation and evidence-aware verdict | `src/accomplice-ui.ts`, `src/accomplice-controller.ts`, `src/accomplice-verdict.ts` |
+| App lifecycle, solo rendering, and styles | `src/main.ts`, `src/ui.ts`, `src/style.css` |
+
+Tests live beside the modules in `src/*.test.ts`. Evidence analysis takes an explicit clock. Presentation changes reuse snapshots; only new investigations fetch profile/repository evidence. Solo and joint cases are retained separately in memory and disappear on reload.
+
+### Evidence and comparison rules
+
+Rules apply to the inspected sample. Forks are excluded from original-repository rules.
+
+| Fictional charge | Eligibility | Joint denominator |
 | --- | --- | --- |
-| Staleness | Non-archived original repositories | At least 1 last push older than 365 days |
-| JS / TS primary language | Original repositories | At least 3 JS / TS originals |
-| Absent / blank description | Original repositories | At least 3 undescribed originals |
-| Forks | All inspected repositories | At least 5 forks |
-| Reported zero KB | Original repositories | At least 1 zero-KB original |
+| Repository Abandonment | At least 1 non-archived original with a recorded push older than 365 days | Non-archived originals |
+| JavaScript Allegiance | At least 3 originals with JavaScript or TypeScript as the primary language | Originals |
+| Serial Repository Creation | At least 10 originals | Excluded from joint scoring |
+| Description Negligence | At least 3 originals with absent or blank descriptions | Originals |
+| Excessive Fork Possession | At least 5 forks | All inspected repositories |
+| Empty Promise | At least 1 original reporting 0 KB | Originals |
 
-GC-303 (raw original repository count) is excluded entirely from joint findings and scoring. Each dimension must have at least **3 relevant repositories per account**, and all relevant metadata must be known on both sides. Otherwise the dimension is excluded for **both** suspects. Unknown fork flags exclude all dimensions; unknown archive flags exclude staleness; null/invalid push dates, null languages, omitted descriptions, or missing/invalid sizes exclude their respective dimensions. GitHub's explicit null description means no description (an existing satirical rule); an omitted description is unknown. Null language means unknown, not proof of language allegiance. Archived repositories do not count toward the staleness denominator. Unknown values are also removed from charge evidence before applying thresholds.
+The joint index is `100 * mean(eligible findings / relevant repositories)`, equally weighted across shared dimensions and rounded to two decimal places. Below-threshold findings contribute zero. Each dimension requires at least **3 relevant repositories per account**, complete relevant metadata on both sides, and at least **2 shared dimensions** overall. Raw repository-count scoring is excluded. Higher displayed indices assign fictional roles; ties and insufficient evidence leave them unassigned. Insufficient evidence also withholds scores.
 
-At least **2 shared dimensions** are required. The fictional evidence index is `100 ? mean(eligible findings / relevant repositories)` across those same dimensions, equally weighted, rounded to two decimal places. The higher displayed score receives CRIMINAL MASTERMIND; the other receives WILLING ACCOMPLICE. Equal rounded scores produce a tie, without a username/ID tie-breaker. Insufficient evidence withholds scores and roles. Both accounts use the later retrieval timestamp as a common abandonment clock. Identical snapshots and clock produce identical results; input order does not change which account wins.
+Unknown metadata excludes a dimension for both suspects: unknown fork flags exclude all dimensions; unknown archive flags exclude staleness; null/invalid push dates, null languages, omitted descriptions, and missing/invalid sizes exclude their respective dimensions. Explicit `null` descriptions mean no description; omitted descriptions are unknown. Unknown values are removed before joint charge eligibility is evaluated.
 
-This is an interpretable satire heuristic, not a statistical confidence estimate or a measure of developer skill. Charge thresholds create discontinuities: equal proportions can differ when only one sample reaches an eligibility threshold. The minimum sample guard is conservative, not a significance test. The up-to-100 most recently updated samples may differ in size, coverage, and composition. No conclusions about an entire account, actual collaboration, private work, or real wrongdoing are justified. All roles and crimes are fictional.
+Both suspects use the later retrieval timestamp as a common staleness clock. Identical snapshots and clock produce deterministic outcomes independent of input order. This is a satire heuristic, not a confidence estimate or developer-skill ranking: thresholds create discontinuities, and samples may differ in size, coverage, and composition.
 
-Implementation: `src/accomplice.ts` owns comparison and joint session state; `src/accomplice-ui.ts` renders the form, evidence, methodology and verdict; `src/accomplice-controller.ts` owns independent DOM/lifecycle state. `src/accomplice.test.ts` covers normalized comparisons, thresholds, order stability, sparse and incomplete metadata, failures, escaping, and solo session isolation.
+### API limits, privacy, and boundaries
 
-### Manual browser checks for v0.5
+- **Public data only:** no OAuth, tokens, backend, database, or private-repository access. Only public profile and repository metadata are inspected; no files, README content, dependencies, or commit histories are fetched.
+- **Bounded requests:** one profile and one page of up to 100 most recently updated owned public repositories, including forks, per account. A successful solo investigation uses two requests; a joint investigation uses four. No pagination. Coverage is disclosed; metadata and profile counts can change between requests.
+- **Failures stay explicit:** missing accounts, network failures, timeouts, and access/rate restrictions show errors. Both joint investigations must succeed before a verdict appears. Duplicate names and aliases resolving to one account are rejected; partial failures require retrying both accounts.
+- **Rate limits:** unauthenticated GitHub access commonly allows 60 requests per hour per IP; shared event Wi-Fi can exhaust it. Each request has a 15-second timeout.
+- **No invented conclusions:** stale repositories can be completed projects; a missing description is not missing documentation; 0 KB does not prove there are no files. Missing metadata is not guilt. Fictional roles imply no real relationship or collaboration.
+- **Local state and export:** the app does not upload or persist investigation results. PNGs are generated locally from the clicked solo snapshot and include one principal charge, not every receipt. Avatar requests go to GitHub; public text is escaped and outgoing URLs restricted. Optional Google Fonts falls back to local monospace fonts; internet access is required for investigations.
+- **Export limits:** blocked/missing avatars fall back to a silhouette in PNGs; export retries without an image on canvas security failure. Export avatar loading uses anonymous CORS and a four-second timeout. Text is measured rather than silently truncated; layout failures show an error. Fonts and browser download/save behavior can vary, particularly on mobile.
+- **Finite humor:** three editions per solo intensity repeat by design. Changing intensity or reissuing resets the appeal; selecting the same intensity does not. Successful new solo investigations reset it; failed investigations do not issue a new sentence. Appeals never change evidence, verdict, sentence, or PNG content.
 
-1. Run `npm run dev`, open the Vite URL, and investigate a public account in SOLO INVESTIGATION. Change intensity, reissue the roast, submit a plea, and download a PNG.
-2. Switch to ACCOMPLICE MODE, enter two distinct public accounts, and select INVESTIGATE BOTH. Confirm two evidence cards, sample coverage, linked receipts, fictional verdict and methodology table. Expand EXAMINE THE EVIDENCE and verify the equal-weight mean using only YES rows. Confirm no joint export or plea controls.
-3. Switch back to solo and confirm its intensity, edition, evidence and appeal remain intact. Switch during either investigation's loading state and confirm the result appears only in its own mode.
-4. Reverse the two usernames and check roles follow the account for unchanged evidence. Try two sparse accounts (or fixture responses with equal ratios) and confirm roles remain unassigned.
-5. Try case variants of the same username, whitespace, invalid punctuation, consecutive hyphens, and a nonexistent account. Confirm specific errors and no stale joint verdict. Retry with valid names.
-6. In browser network tools, block one `/repos` request or simulate offline/403/429 responses. Confirm the affected suspect is identified, no partial verdict appears, and solo state remains usable. A successful joint request should make four GitHub API calls.
-7. Check a narrow mobile viewport, keyboard-only mode switching and form submission, visible focus, live progress/errors, long names, and horizontally scrollable comparison table. Test in current Chrome, Firefox and Safari.
+### Manual browser checks
 
-Automated tests do not exercise an actual browser DOM or live GitHub. Browser layout, accessibility, in-flight switching and real network behavior still require these manual checks.
+Try solo intensity changes, reissuing, appeals, and PNG export; then switch to joint mode and back to confirm state isolation. Check a winner in either position, equal and insufficient evidence, long usernames, unavailable avatars, and invalid/duplicate accounts. Use network tools to simulate a blocked repository request or a 403/429 response and confirm there is no partial verdict. Check mobile layout, keyboard focus, the evidence disclosure, reduced motion, and download behavior in your target browsers.
 
-### Accomplice showdown presentation
+Broader pagination, persistent archives, sharing, and an optional AI roast engine remain future ideas, not implemented features.
 
-Joint results lead with CRIMINAL SHOWDOWN, two large public avatars (initials if unavailable), a VS separator, and distinct fictional role stamps. Ties and insufficient evidence explicitly withhold a mastermind. The verdict immediately follows the matchup; scores, coverage, charge codes, linked receipts, and methodology sit inside the initially collapsed EXAMINE THE EVIDENCE panel.
+---
 
-`src/accomplice-verdict.ts` adds presentation only. For an assigned result, it selects the largest positive proportional contribution among dimensions already marked comparable by the existing engine, contrasts eligible counts and denominators, and uses a finding-specific developer punchline. Equal contributions use existing dimension order. A zero eligible numerator is described as no eligible charge, not as proof that no matching repositories exist. Tie and insufficient-evidence copy does not select a winner or imply collaboration. Scoring and API requests are unchanged.
-
-Manual visual checks: verify avatar loading and blocked-avatar initials, a winner in either position, nonzero and zero-score ties, insufficient evidence, 39-character usernames, mobile stacked dossiers, keyboard access to the evidence disclosure, and preserved solo behavior. Browser layout and image-error handling require manual verification.
+All charges, roles, verdicts, and sentences are fictional developer satire. **Public evidence. Questionable justice.**
