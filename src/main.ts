@@ -1,4 +1,5 @@
 import './style.css';
+import { mountAccompliceMode } from './accomplice-controller';
 import { InvestigationSession } from './session';
 import { isIntensity } from './intensity';
 import { renderAppeal, renderRecord, shell } from './ui';
@@ -122,3 +123,5 @@ form.addEventListener('submit', async event => {
     form.removeAttribute('aria-busy');
   }
 });
+
+mountAccompliceMode();

@@ -25,6 +25,8 @@ npm run preview # Preview production build
 
 ## Features
 
+- **Accomplice Mode (v0.5):** switch between independent solo and joint investigations. Investigate two distinct public GitHub usernames, inspect both evidence files and comparison ratios, and receive fictional CRIMINAL MASTERMIND / WILLING ACCOMPLICE roles only when comparable scores differ. Ties and insufficient evidence leave both roles unassigned. Joint cases do not support PNG export, intensity controls, or Plea Bargain. Solo features remain available in the solo panel.
+
 - **Plea Bargain (v0.4):** after THE SENTENCE, choose I PLEAD NOT GUILTY, IT WORKS ON MY MACHINE, or BLAME THE INTERN. A terminal court transcript quotes the statement, responds with existing lead-charge evidence and a mode-specific judge quip, and concludes APPEAL DENIED.
 - One appeal is allowed per issued sentence. A successful new investigation (including the same username), a changed intensity, or any reissued roast resets it. Re-selecting the current intensity does not. A failed investigation does not issue a new sentence.
 - Appeals use six charge-specific template sets that weave retrieved counts and metadata into the punchline. Innocence, localhost alibis, and imaginary delegation have distinct comedic premises, without a repeated factual appendix. Replies stay within two sentences and do not infer abandonment, local activity, file contents, or a real intern.
@@ -86,7 +88,7 @@ Rules use the retrieved sample; forks are excluded from original-repository rule
 - No files, dependency manifests, README content, or commit histories are fetched. Primary language does not prove dependency usage; absent description does not imply missing documentation. Zero KB is metadata, not proof of no files.
 - Profile and repository requests are separate snapshots; counts may change between them. Metadata may lag actual activity.
 - Cases identify an account and UTC date; nothing persists after reload. Rules are deterministic for identical data and clock, but live data changes.
-- Humor is a finite curated template set, not AI generation. Three editions per mode repeat by design. Only the active investigation is retained in memory; submitting a username again explicitly fetches fresh evidence.
+- Humor is a finite curated template set, not AI generation. Three editions per mode repeat by design. Only the active solo and active joint investigations are retained separately in memory; submitting a username again explicitly fetches fresh evidence.
 - Export includes one principal charge, not the full record or repository list. It discloses sample coverage and metadata-only scope. All judicial language is fictional.
 - Avatar loading is restricted to HTTPS `avatars.githubusercontent.com` with anonymous CORS and a four-second timeout. Missing/blocked avatars use a silhouette; a canvas security failure retries without the photo. System Courier fonts avoid external font dependencies in the PNG, but metrics may vary slightly by platform.
 - Export text is wrapped and measured down to a minimum of 14 px without silent truncation. If future templates exceed the available space, export shows an error rather than dropping evidence or the sentence.
@@ -97,3 +99,45 @@ Rules use the retrieved sample; forks are excluded from original-repository rule
 ## Planned enhancements
 
 Optional AI roast engine behind the evidence contract, persistent archives, sharing, and broader paginated evidence retrieval. These are future work. No OpenAI/OpenRouter integration, database, authentication, leaderboard, or deployment infrastructure is included.
+
+## Accomplice comparison methodology (v0.5)
+
+The joint engine reuses `investigate`, `analyzeEvidence`, and `eligibleCharges`. Each account costs the existing profile request plus one repository-page request (four requests total on success); no new endpoints, dependencies, authentication, or persistence. Both requests must succeed before any verdict appears. Failures identify the affected username, clear the previous joint case, and require retrying both accounts. Duplicate names are rejected case-insensitively before fetching; aliases resolving to one account are rejected after fetching.
+
+For each dimension, the numerator is the number of supporting repositories **only if the existing charge threshold is met**, otherwise zero:
+
+| Dimension | Denominator | Existing eligibility threshold |
+| --- | --- | --- |
+| Staleness | Non-archived original repositories | At least 1 last push older than 365 days |
+| JS / TS primary language | Original repositories | At least 3 JS / TS originals |
+| Absent / blank description | Original repositories | At least 3 undescribed originals |
+| Forks | All inspected repositories | At least 5 forks |
+| Reported zero KB | Original repositories | At least 1 zero-KB original |
+
+GC-303 (raw original repository count) is excluded entirely from joint findings and scoring. Each dimension must have at least **3 relevant repositories per account**, and all relevant metadata must be known on both sides. Otherwise the dimension is excluded for **both** suspects. Unknown fork flags exclude all dimensions; unknown archive flags exclude staleness; null/invalid push dates, null languages, omitted descriptions, or missing/invalid sizes exclude their respective dimensions. GitHub's explicit null description means no description (an existing satirical rule); an omitted description is unknown. Null language means unknown, not proof of language allegiance. Archived repositories do not count toward the staleness denominator. Unknown values are also removed from charge evidence before applying thresholds.
+
+At least **2 shared dimensions** are required. The fictional evidence index is `100 ? mean(eligible findings / relevant repositories)` across those same dimensions, equally weighted, rounded to two decimal places. The higher displayed score receives CRIMINAL MASTERMIND; the other receives WILLING ACCOMPLICE. Equal rounded scores produce a tie, without a username/ID tie-breaker. Insufficient evidence withholds scores and roles. Both accounts use the later retrieval timestamp as a common abandonment clock. Identical snapshots and clock produce identical results; input order does not change which account wins.
+
+This is an interpretable satire heuristic, not a statistical confidence estimate or a measure of developer skill. Charge thresholds create discontinuities: equal proportions can differ when only one sample reaches an eligibility threshold. The minimum sample guard is conservative, not a significance test. The up-to-100 most recently updated samples may differ in size, coverage, and composition. No conclusions about an entire account, actual collaboration, private work, or real wrongdoing are justified. All roles and crimes are fictional.
+
+Implementation: `src/accomplice.ts` owns comparison and joint session state; `src/accomplice-ui.ts` renders the form, evidence, methodology and verdict; `src/accomplice-controller.ts` owns independent DOM/lifecycle state. `src/accomplice.test.ts` covers normalized comparisons, thresholds, order stability, sparse and incomplete metadata, failures, escaping, and solo session isolation.
+
+### Manual browser checks for v0.5
+
+1. Run `npm run dev`, open the Vite URL, and investigate a public account in SOLO INVESTIGATION. Change intensity, reissue the roast, submit a plea, and download a PNG.
+2. Switch to ACCOMPLICE MODE, enter two distinct public accounts, and select INVESTIGATE BOTH. Confirm two evidence cards, sample coverage, linked receipts, fictional verdict and methodology table. Expand EXAMINE THE EVIDENCE and verify the equal-weight mean using only YES rows. Confirm no joint export or plea controls.
+3. Switch back to solo and confirm its intensity, edition, evidence and appeal remain intact. Switch during either investigation's loading state and confirm the result appears only in its own mode.
+4. Reverse the two usernames and check roles follow the account for unchanged evidence. Try two sparse accounts (or fixture responses with equal ratios) and confirm roles remain unassigned.
+5. Try case variants of the same username, whitespace, invalid punctuation, consecutive hyphens, and a nonexistent account. Confirm specific errors and no stale joint verdict. Retry with valid names.
+6. In browser network tools, block one `/repos` request or simulate offline/403/429 responses. Confirm the affected suspect is identified, no partial verdict appears, and solo state remains usable. A successful joint request should make four GitHub API calls.
+7. Check a narrow mobile viewport, keyboard-only mode switching and form submission, visible focus, live progress/errors, long names, and horizontally scrollable comparison table. Test in current Chrome, Firefox and Safari.
+
+Automated tests do not exercise an actual browser DOM or live GitHub. Browser layout, accessibility, in-flight switching and real network behavior still require these manual checks.
+
+### Accomplice showdown presentation
+
+Joint results lead with CRIMINAL SHOWDOWN, two large public avatars (initials if unavailable), a VS separator, and distinct fictional role stamps. Ties and insufficient evidence explicitly withhold a mastermind. The verdict immediately follows the matchup; scores, coverage, charge codes, linked receipts, and methodology sit inside the initially collapsed EXAMINE THE EVIDENCE panel.
+
+`src/accomplice-verdict.ts` adds presentation only. For an assigned result, it selects the largest positive proportional contribution among dimensions already marked comparable by the existing engine, contrasts eligible counts and denominators, and uses a finding-specific developer punchline. Equal contributions use existing dimension order. A zero eligible numerator is described as no eligible charge, not as proof that no matching repositories exist. Tie and insufficient-evidence copy does not select a winner or imply collaboration. Scoring and API requests are unchanged.
+
+Manual visual checks: verify avatar loading and blocked-avatar initials, a winner in either position, nonzero and zero-score ties, insufficient evidence, 39-character usernames, mobile stacked dossiers, keyboard access to the evidence disclosure, and preserved solo behavior. Browser layout and image-error handling require manual verification.

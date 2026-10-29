@@ -47,3 +47,50 @@
 .charge .factual-evidence{font-size:11px;border-left:2px solid #43513e;padding-left:12px}
 .factual-evidence strong{color:var(--green);font-size:9px;letter-spacing:1px}
 @media(max-width:550px){.mode-options{grid-template-columns:1fr}.mode-option{align-items:center}.mode-option span{display:flex;align-items:center;justify-content:space-between;gap:12px;flex:1}.mode-option small{margin-top:0;max-width:48%}.roast-actions{align-items:flex-start;flex-direction:column}}
+
+.investigation-modes{display:flex;flex-wrap:wrap;gap:10px;margin:24px 0}
+.investigation-modes button{background:transparent;color:var(--muted);min-height:44px}
+.investigation-modes button[aria-pressed=true]{background:var(--green);color:#17200e}
+.joint-inputs,.joint-suspects{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-bottom:20px}
+#joint-form>button{width:100%}
+#joint-record{margin-top:50px;scroll-margin-top:25px}
+.joint-suspects{margin-top:24px}.joint-suspects h2{margin-top:18px;overflow-wrap:anywhere}
+.joint-score{color:var(--green)!important}
+#joint-status{color:var(--green);font-size:11px;line-height:1.8;margin-top:20px}
+#joint-error{border-left:2px solid #ed9a82;color:#ffc2ad;padding:12px 16px;margin-top:20px;font-size:12px;line-height:1.8}
+.joint-method{padding:24px 0;font-size:11px;line-height:1.9;color:var(--muted)}
+.comparison-scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;text-align:left}th,td{padding:12px;border:1px solid var(--border)}caption{text-align:left;padding:12px 0;color:var(--green)}
+@media(max-width:650px){.joint-inputs,.joint-suspects{grid-template-columns:1fr}.investigation-modes button{flex:1}}
+
+/* Joint results: judicial dossiers meet an arcade versus screen. */
+#joint-record .showdown-heading{text-align:center;border-top:1px solid var(--border);padding:34px 0 28px}
+#joint-record .showdown-heading h2{font-size:clamp(30px,5.5vw,58px);line-height:1.05;letter-spacing:-2px;margin:15px 0;color:var(--green)}
+.showdown-heading>p{color:var(--muted);font-size:15px;line-height:1.7;margin:0 0 23px}
+.showdown-outcome{display:inline-block;border:1px solid #d4b571;color:#f0c48b;background:#d4b5710a;padding:10px 16px;font-size:11px;letter-spacing:1.2px;line-height:1.8}
+.showdown-matchup{display:grid;grid-template-columns:minmax(0,1fr) 64px minmax(0,1fr);align-items:stretch}
+.showdown-dossier{position:relative;min-width:0;text-align:center;border:1px solid #536347;background:repeating-linear-gradient(0deg,transparent,transparent 3px,#ffffff02 3px,#ffffff02 4px),#111a13;padding:18px 24px 24px}
+.dossier-topline{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed var(--border);padding-bottom:12px;margin-bottom:24px;color:var(--muted);font-size:8px;letter-spacing:1px}
+.showdown-portrait{position:relative;display:grid;place-items:center;width:176px;max-width:100%;aspect-ratio:1;margin:0 auto;background:#202c22;border:1px solid #536347;box-shadow:6px 6px 0 #0004}
+.showdown-portrait>span{font-size:54px;font-weight:700;color:var(--muted)}
+.showdown-portrait img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.1)}
+.showdown-dossier h3{font-size:clamp(22px,3vw,32px);line-height:1.3;letter-spacing:-1px;margin:25px 0 8px;overflow-wrap:anywhere}
+.showdown-dossier h3 a{text-decoration:none}
+.dossier-name{font-size:11px;color:var(--muted);min-height:18px;overflow-wrap:anywhere;line-height:1.7}
+.showdown-stamp{display:block;margin:27px 0 16px;padding:13px 8px;border:3px double currentColor;font-size:clamp(17px,2.5vw,25px);font-weight:700;line-height:1.3;letter-spacing:1px;transform:rotate(-3deg);color:#f0c48b}
+.dossier-caption{font-size:8px;line-height:1.8;letter-spacing:1px;color:var(--muted);margin:0}
+.is-mastermind{border:2px solid var(--green);background-color:#172214;box-shadow:0 0 35px #b5f76b10}
+.is-mastermind .showdown-stamp{color:var(--green);background:#b5f76b0b;border-style:solid;box-shadow:3px 3px 0 #b5f76b25}
+.is-mastermind .showdown-portrait{border:2px solid var(--green)}
+.is-accomplice .showdown-stamp{font-size:clamp(15px,2vw,19px);border-width:2px;margin-top:30px;transform:rotate(2deg)}
+.is-unassigned .showdown-stamp{color:#bdc8bf;transform:none;font-size:19px}
+.showdown-vs{display:grid;place-items:center;position:relative;color:#f0c48b;font-size:26px;font-weight:700;font-style:italic;text-shadow:2px 2px #000}
+.showdown-vs:before{content:'';position:absolute;top:0;bottom:0;border-left:1px dashed var(--border);z-index:-1}
+.showdown-vs span{background:#0a100e;padding:15px 0}
+#joint-record .showdown-verdict{margin-top:28px;padding:28px}
+#joint-record .showdown-verdict .verdict-text{font-size:clamp(17px,2.2vw,23px);line-height:1.8}
+#joint-record .joint-method{border:1px solid var(--border);padding:0;background:#0e1611}
+#joint-record .joint-method>summary{padding:20px;letter-spacing:1.5px;font-weight:700;line-height:1.7}
+#joint-record .joint-method[open]>summary{border-bottom:1px solid var(--border)}
+#joint-record .joint-method>p,#joint-record .joint-method>.comparison-scroll,#joint-record .joint-method>.joint-suspects{margin:20px}
+#joint-record .comparison-scroll th{overflow-wrap:anywhere}
+@media(max-width:650px){.showdown-matchup{grid-template-columns:minmax(0,1fr)}.showdown-vs{min-height:64px}.showdown-vs:before{border-left:0;border-top:1px dashed var(--border);left:0;right:0;top:50%;bottom:auto}.showdown-vs span{padding:8px 20px}.showdown-dossier{padding:18px 20px 24px}.showdown-dossier h3{font-size:28px}.showdown-stamp{font-size:24px}.is-accomplice .showdown-stamp{font-size:19px}.showdown-outcome{font-size:10px}#joint-record .showdown-verdict{padding:22px 18px}#joint-record .joint-method>.joint-suspects,#joint-record .joint-method>p,#joint-record .joint-method>.comparison-scroll{margin:16px}}
