@@ -25,6 +25,11 @@ npm run preview # Preview production build
 
 ## Features
 
+- **Choose Your Sentence (v0.2):** select FRIENDLY WARNING, FELONY (default), or UNHINGED before investigating, then switch directly above the record. Modes range from gentle lint-warning humor to theatrical rubber-duck tribunals.
+- Mode changes instantly reuse the current evidence snapshot without additional GitHub requests. The selectors stay synchronized, including when a mode is chosen during loading.
+- **REISSUE ROAST** cycles through three deterministic editions per mode: different charge jokes, verdicts, and sentences, with the same factual findings and case ID. Editions cycle after three; switching mode preserves the current edition. A fresh investigation starts at edition one, with its initial wording selected by account ID and sample size.
+- Zero-repository and below-threshold samples get mode-specific insufficient-evidence jokes and fictional releases. No charges or private activity are invented to fill the page.
+- Roast text is displayed separately from labeled factual evidence. Intensity changes presentation only; eligibility, severity, repository links, and statistics stay identical.
 - Responsive terminal interface with reduced motion support, keyboard access, and live progress without artificial delays.
 - Real GitHub public profile and up to 100 repositories, using two requests per investigation with no token.
 - Six deterministic possible charges with linked receipts, case ID, avatar, statistics, verdict, and sentence.
@@ -50,12 +55,17 @@ Rules use the retrieved sample; forks are excluded from original-repository rule
 - `src/github.ts`: API retrieval, progress, and errors.
 - `src/types.ts`: shared data contracts.
 - `src/evidence.ts`: pure analysis with explicit clock.
-- `src/charges.ts`: deterministic charge templates and case generation.
+- `src/eligibility.ts`: factual charge eligibility and evidence statements, independent of humor.
+- `src/intensity.ts`: typed modes, labels, descriptions, and default.
+- `src/humor.ts`: curated mode-specific charge titles, joke variants, verdicts, sentences, and cleared-record commentary.
+- `src/charges.ts`: deterministic presentation assembly and case generation.
+- `src/session.ts`: active evidence snapshot, mode selection, and three-edition cycle. Only opening an investigation performs network requests.
 - `src/ui.ts`: escaped HTML rendering.
 - `src/main.ts`: investigation lifecycle.
 - `src/style.css`: responsive styling.
 - `src/analysis.test.ts`: evidence boundaries, charge thresholds, cleared states, deterministic results, receipts, and escaping.
 - `src/github.test.ts`: request count, progress, missing users, rate limits, and network failures with mocked API responses.
+- `src/roast.test.ts`: all modes, factual invariance, deterministic editions, sparse profiles, safe rendering, and request-free mode switching/reissuing.
 
 ## Known limitations
 
@@ -64,6 +74,7 @@ Rules use the retrieved sample; forks are excluded from original-repository rule
 - No files, dependency manifests, README content, or commit histories are fetched. Primary language does not prove dependency usage; absent description does not imply missing documentation. Zero KB is metadata, not proof of no files.
 - Profile and repository requests are separate snapshots; counts may change between them. Metadata may lag actual activity.
 - Cases identify an account and UTC date; nothing persists after reload. Rules are deterministic for identical data and clock, but live data changes.
+- Humor is a finite curated template set, not AI generation. Three editions per mode repeat by design. Only the active investigation is retained in memory; submitting a username again explicitly fetches fresh evidence.
 - Internet access is required. Optional Google Fonts falls back to local monospace fonts.
 - Automated tests cover pure analysis and generation; browser interaction and live GitHub availability require manual verification.
 

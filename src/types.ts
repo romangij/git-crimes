@@ -29,5 +29,8 @@ export interface Evidence {
   forks: GitHubRepo[];
   empty: GitHubRepo[];
 }
-export interface Charge { code: string; title: string; evidence: string; repos: GitHubRepo[]; severity: 'MISDEMEANOR' | 'FELONY' }
-export interface CriminalRecord { caseId: string; charges: Charge[]; verdict: string; sentence: string }
+export type Intensity = 'friendly' | 'felony' | 'unhinged';
+export type ChargeCode = 'GC-101' | 'GC-204' | 'GC-303' | 'GC-404' | 'GC-409' | 'GC-000';
+export interface EligibleCharge { code: ChargeCode; evidence: string; repos: GitHubRepo[]; severity: 'MISDEMEANOR' | 'FELONY' }
+export interface Charge extends EligibleCharge { title: string; joke: string }
+export interface CriminalRecord { caseId: string; intensity: Intensity; charges: Charge[]; verdict: string; sentence: string; commentary: string }
