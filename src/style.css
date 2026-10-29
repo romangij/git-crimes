@@ -12,6 +12,19 @@
 @media(max-width:550px){.verdict{padding:22px 18px}.sentence-section{margin-top:26px;padding-top:24px}}
 
 /* Sentence controls retain the terminal's compact, keyboard-friendly identity. */
+.plea-bargain{margin-top:30px;padding-top:26px;border-top:1px dashed var(--border)}
+.plea-bargain .eyebrow{line-height:1.9}
+.verdict .appeal-subtitle{font-size:12px;margin:0 0 18px;color:var(--muted)}
+.defense-options{display:flex;flex-wrap:wrap;gap:10px}
+.defense-options button{background:transparent;color:var(--green);border-color:#536347;min-height:44px;padding:10px 14px;font-size:10px;line-height:1.6}
+.defense-options button:hover:not(:disabled){background:#b5f76b10;border-color:var(--green)}
+.defense-options button:disabled{cursor:default;opacity:.45}
+.appeal-transcript{margin-top:22px;padding:18px 20px;background:#090f0b;border:1px solid var(--border);overflow-wrap:anywhere}
+.verdict .appeal-transcript p{font-size:12px;line-height:1.9;margin:0 0 16px;color:#c5d2bf}
+.appeal-transcript strong{color:var(--green);font-size:10px;letter-spacing:.7px}
+.verdict .appeal-transcript .appeal-ruling{color:#e5b573;font-weight:700;letter-spacing:1.2px;margin:0}
+.verdict .appeal-note{font-size:10px;color:var(--muted);margin:14px 0 0;line-height:1.8}
+@media(max-width:550px){.defense-options{flex-direction:column}.defense-options button{width:100%;text-align:left}.appeal-transcript{padding:16px}}
 .export-actions{display:flex;align-items:center;flex-wrap:wrap;gap:16px;margin-top:30px;padding-top:24px;border-top:1px solid var(--border)}
 .export-actions button{min-height:46px;white-space:normal;line-height:1.6}
 .export-actions>span{color:var(--muted);font-size:9px;letter-spacing:.5px;line-height:1.8}

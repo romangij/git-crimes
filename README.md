@@ -25,6 +25,10 @@ npm run preview # Preview production build
 
 ## Features
 
+- **Plea Bargain (v0.4):** after THE SENTENCE, choose I PLEAD NOT GUILTY, IT WORKS ON MY MACHINE, or BLAME THE INTERN. A terminal court transcript quotes the statement, responds with existing lead-charge evidence and a mode-specific judge quip, and concludes APPEAL DENIED.
+- One appeal is allowed per issued sentence. A successful new investigation (including the same username), a changed intensity, or any reissued roast resets it. Re-selecting the current intensity does not. A failed investigation does not issue a new sentence.
+- Appeals use six charge-specific template sets that weave retrieved counts and metadata into the punchline. Innocence, localhost alibis, and imaginary delegation have distinct comedic premises, without a repeated factual appendix. Replies stay within two sentences and do not infer abandonment, local activity, file contents, or a real intern.
+- Appeals are deterministic with three response variants per defense and mode. Case, intensity, and defense select the starting variant; the explicit roast edition advances it. REISSUE ROAST unlocks another appeal and changes the judge wording for the same defense, cycling after three editions. No additional API calls occur. Cleared cases receive a generic ceremonial-send-off response that explicitly preserves their clearance. Appeals never change charges, verdicts, sentences, or PNG exports.
 - **Export Your Criminal Record (v0.3):** use **EXPORT CRIMINAL RECORD** beneath the sentence to download a 1200 × 630 PNG. The ivory judicial document includes the public avatar (or dossier silhouette), username, case ID, current intensity, principal charge and factual evidence, current verdict and sentence, and `git-crimes.pages.dev`.
 - Export captures the mode and roast edition at click time. The principal charge uses the engine's stable order (abandonment, language, creation, descriptions, forks, empty size); cleared profiles get a CLEARED stamp and an insufficient-evidence finding instead of a conviction.
 - Canvas rendering and PNG encoding run entirely in the browser. Nothing is uploaded, published, or persisted by the app. The existing public avatar may be requested anonymously from GitHub; no additional profile/repository API calls are made.
@@ -63,6 +67,8 @@ Rules use the retrieved sample; forks are excluded from original-repository rule
 - `src/humor.ts`: curated mode-specific charge titles, joke variants, verdicts, sentences, and cleared-record commentary.
 - `src/charges.ts`: deterministic presentation assembly and case generation.
 - `src/session.ts`: active evidence snapshot, mode selection, and three-edition cycle. Only opening an investigation performs network requests.
+- `src/appeal.ts`: defense options, pure evidence-aware judge responses, and appeal data types; one-shot/reset state is owned by the session.
+- `src/appeal-templates.ts`: charge-specific defense writing, cleared-case replies, and mode-aware courtroom wording; counts come from the existing charge's supporting repositories.
 - `src/export-record.ts`: export data mapping, measured text layout, CORS-safe avatar loading, judicial Canvas rendering, PNG encoding, and local download.
 - `src/ui.ts`: escaped HTML rendering.
 - `src/main.ts`: investigation lifecycle.
@@ -70,6 +76,7 @@ Rules use the retrieved sample; forks are excluded from original-repository rule
 - `src/analysis.test.ts`: evidence boundaries, charge thresholds, cleared states, deterministic results, receipts, and escaping.
 - `src/github.test.ts`: request count, progress, missing users, rate limits, and network failures with mocked API responses.
 - `src/roast.test.ts`: all modes, factual invariance, deterministic editions, sparse profiles, safe rendering, and request-free mode switching/reissuing.
+- `src/appeal.test.ts`: defenses, evidence and cleared fallbacks, deterministic variants, one-shot/reset state, unchanged exports, request counts, and transcript rendering.
 - `src/export-record.test.ts`: current snapshot mapping, cleared exports, all mode/edition layouts, long-text wrapping, avatar origin/CORS/error/timeout behavior, PNG encoding, and download cleanup. Canvas and DOM are mocked; these tests do not replace browser rendering checks.
 
 ## Known limitations

@@ -1,7 +1,8 @@
 import './style.css';
 import { InvestigationSession } from './session';
 import { isIntensity } from './intensity';
-import { renderRecord, shell } from './ui';
+import { renderAppeal, renderRecord, shell } from './ui';
+import { isDefense } from './appeal';
 import { buildExportDocument, createRecordPng, downloadRecord } from './export-record';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = shell();
@@ -43,7 +44,7 @@ result.addEventListener('click', async event => {
 
 function renderCurrent() {
   const current = session.current();
-  if (current) result.innerHTML = renderRecord(current.data, current.evidence, current.record);
+  if (current) result.innerHTML = renderRecord(current.data, current.evidence, current.record, current.appeal);
   if (exporting) {
     const exportButton = result.querySelector<HTMLButtonElement>('#export-record');
     if (exportButton) { exportButton.disabled = true; exportButton.textContent = 'PREPARING RECORD…'; }
@@ -73,6 +74,17 @@ result.addEventListener('click', event => {
   renderCurrent();
   result.querySelector<HTMLButtonElement>('#remix')!.focus({ preventScroll: true });
   status.textContent = '> Roast reissued. Three editions per mode; evidence unchanged.';
+});
+
+result.addEventListener('click', event => {
+  if (!(event.target instanceof Element) || busy) return;
+  const defense = event.target.closest<HTMLButtonElement>('button[data-defense]')?.dataset.defense;
+  if (!defense || !isDefense(defense)) return;
+  const appeal = session.submitDefense(defense);
+  if (!appeal) return;
+  // Update only the hearing, preserving receipts, export state, and the sentence.
+  result.querySelector('#plea-bargain')!.outerHTML = renderAppeal(appeal);
+  result.querySelector<HTMLElement>('#appeal-transcript')!.focus();
 });
 
 form.addEventListener('submit', async event => {

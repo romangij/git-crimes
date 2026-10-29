@@ -1,5 +1,7 @@
 import type { CriminalRecord, Evidence, Investigation } from './types';
 import { DEFAULT_INTENSITY, INTENSITIES } from './intensity';
+import { DEFENSES } from './appeal';
+import type { Appeal } from './appeal';
 
 export function intensitySelector(name: string, selected = DEFAULT_INTENSITY): string {
   return `<fieldset class="intensity"><legend>CHOOSE YOUR SENTENCE</legend><div class="mode-options">${INTENSITIES.map(mode => `<label class="mode-option"><input type="radio" name="${name}" value="${mode.value}" ${mode.value === selected ? 'checked' : ''}><span><strong>${mode.label}</strong><small>${mode.hint}</small></span></label>`).join('')}</div><p>Same evidence. Different prosecutor. Switching modes costs zero API requests.</p></fieldset>`;
@@ -29,7 +31,16 @@ export function shell(): string {
     </main>`;
 }
 
-export function renderRecord(data: Investigation, evidence: Evidence, record: CriminalRecord): string {
+export function renderAppeal(appeal?: Appeal): string {
+  return `<section id="plea-bargain" class="plea-bargain" aria-labelledby="appeal-heading">
+    <h3 id="appeal-heading" class="eyebrow">THE DEFENDANT HAS THE RIGHT TO REMAIN SILENT</h3>
+    <p class="appeal-subtitle">Unfortunately, the defendant has chosen to speak.</p>
+    <div class="defense-options" role="group" aria-label="Choose a defense; one appeal per sentence">${DEFENSES.map(option => `<button type="button" data-defense="${option.value}" ${appeal ? 'disabled' : ''}>${option.statement}</button>`).join('')}</div>
+    ${appeal ? `<div id="appeal-transcript" class="appeal-transcript" tabindex="-1" role="group" aria-label="Court transcript"><p><strong>DEFENDANT &gt;</strong> ${escapeHtml(appeal.statement)}</p><p><strong>JUDGE &gt;</strong> ${escapeHtml(appeal.judge)}</p><p class="appeal-ruling">${appeal.ruling}</p></div><p class="appeal-note">Appeal exhausted. The original verdict and sentence stand. Reissue the roast to try another defense.</p>` : '<p class="appeal-note">One appeal per issued sentence. No additional evidence will be fetched.</p>'}
+  </section>`;
+}
+
+export function renderRecord(data: Investigation, evidence: Evidence, record: CriminalRecord, appeal?: Appeal): string {
   const { profile } = data;
   const e = escapeHtml;
   return `<div class="record-heading"><span class="eyebrow">INVESTIGATION COMPLETE</span><span class="case-id">CASE ${e(record.caseId)}</span></div>
@@ -40,6 +51,7 @@ export function renderRecord(data: Investigation, evidence: Evidence, record: Cr
     <div class="verdict">
       <section class="verdict-section" aria-labelledby="verdict-heading"><h3 id="verdict-heading" class="eyebrow">THE VERDICT</h3><p class="verdict-text">${e(record.verdict)}</p></section>
       <section class="sentence-section" aria-labelledby="sentence-heading"><h3 id="sentence-heading" class="eyebrow">THE SENTENCE</h3><p class="sentence-text">${e(record.sentence)}</p></section>
+      ${renderAppeal(appeal)}
       <div class="export-actions"><button id="export-record" type="button">EXPORT CRIMINAL RECORD</button><span>1200 × 630 PNG / GENERATED LOCALLY</span></div>
     </div><p class="disclaimer">This is developer satire. All charges and sentences are fictional. Stale repositories can be finished projects. Forks are perfectly legal.</p>`;
 }
