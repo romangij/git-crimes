@@ -4,7 +4,7 @@
 
 Built during **Codex Build Day Guadalajara 2026** by **GCPD — GitHub Crime Police Department**, with OpenAI Codex.
 
-**[LIVE DEMO](https://git-crimes.pages.dev/) · [WATCH DEMO](https://youtu.be/zYIzrisTKns) · [CODEX EVIDENCE](#codex-evidence)**
+**[LIVE DEMO](https://git-crimes.pages.dev/) · [WATCH DEMO](https://youtu.be/KwmJT6NzKCs) · [CODEX EVIDENCE](#codex-evidence)**
 
 [Source repository](https://github.com/romangij/git-crimes) · [Try it](#try-the-project) · [Development case study](#how-we-built-it-with-codex) · [Technical information](#technical-information)
 
